@@ -4,15 +4,15 @@ import 'package:images_app/src/bloc/provider.dart';
 import 'package:images_app/src/providers/user_provider.dart';
 import 'package:images_app/src/utils/utils.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  
   final userProvider = UserProvider();
-
   bool _loading = false;
 
   @override
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: Column( 
                   children: [
-                    Text('Login'),
+                    Text('Sign up'),
                     SizedBox(height: 20.0,),
                     _createEmail(bloc),
                     _createPassword(bloc),
@@ -136,11 +136,12 @@ class _LoginPageState extends State<LoginPage> {
               //padding: EdgeInsets.symmetric( horizontal: 80.0, vertical: 15.0),
               width: double.infinity,
               child: Center(
-                child: Text('Login')
+                child: Text('Sign Up')
               ),
             ),
-            onPressed: (snapshot.hasData && !_loading) ? () => _login(bloc, context) : null,
-            style: ElevatedButton.styleFrom( primary: Colors.deepPurple ),
+            onPressed: (snapshot.hasData && !_loading) ? () => _signUp(bloc, context) : null,
+
+            style: ElevatedButton.styleFrom( primary: Color.fromRGBO(63, 159, 63, 1.0) ),
           ),
         );
       },
@@ -148,18 +149,17 @@ class _LoginPageState extends State<LoginPage> {
 
   }
 
-  _login(LoginBloc bloc, BuildContext context) async {
+  _signUp(LoginBloc bloc, BuildContext context) async {
     
     setState(() => _loading = true );
-    
-    Map info = await userProvider.login(bloc.email, bloc.password);
-    
+    Map info = await userProvider.signUp(bloc.email, bloc.password);
     setState(() => _loading = false );
-
+    
     if(info['ok'])
-      Navigator.pushNamed(context, 'home');
+      Navigator.pop(context);
     else
       showAlert(context, 'Error', info['message']);
+
   }
 
   Widget _registerButton(BuildContext context){
@@ -174,8 +174,8 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text('Sign up')
               ),
             ),
-            onPressed: () => Navigator.pushNamed(context, 'signup'),
-            style: ElevatedButton.styleFrom( primary: Color.fromRGBO(63, 159, 63, 1.0) ),
+            onPressed: () => Navigator.pop(context),
+            style: ElevatedButton.styleFrom( primary: Color.fromRGBO(159, 63, 63, 1.0) ),
           ),
         );
   }
@@ -216,11 +216,11 @@ class _LoginPageState extends State<LoginPage> {
 
         Container(
           padding: EdgeInsets.only(top: size.height * 0.1),
-          child: Column( 
+          child: Column(
             children: [
               Icon(Icons.person_pin_circle, color: Colors.white, size: 100.0,),
               SizedBox(height: 10.0, width: double.infinity,),
-              Text('Andrés López', style: TextStyle(color: Colors.white, fontSize: 20.0))
+              Text('Create account', style: TextStyle(color: Colors.white, fontSize: 20.0))
             ],
           ),
         )
